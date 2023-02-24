@@ -41,7 +41,7 @@ const botActions = () => {
       } else if (text === '💰 My Crypto') {
         myCrypto(chatId);
       } else if (text === '🪙 BTC') {
-        monitorPrice();
+        monitorPrice(true);
       } else if (text === 'Buy') {
         bot.sendMessage(
           chatId,
@@ -67,4 +67,4 @@ const botActions = () => {
 };
 
 botActions();
-setInterval(monitorPrice, 1800 * 1000);
+setInterval(() => monitorPrice(false), 1800 * 1000);

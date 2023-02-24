@@ -3,7 +3,7 @@ const { getLatestPrices } = require('./buttonsActions');
 const BTC = require('./models/BTC');
 
 module.exports = {
-  async monitorPrice() {
+  async monitorPrice(mode) {
     try {
       BTC.findOne({ currency: 'BTC' }, (err, btc) => {
         if (err) {
@@ -13,16 +13,15 @@ module.exports = {
             .then(async (res) => {
               let currentPrice = res.data.BTC.quote.USD.price.toFixed(2);
               let difference = +btc.price.toString().slice(0, 2) - +currentPrice.toString().slice(0, 2);
-              let differenceProcent = ((+currentPrice * 100) / +btc.price - 100).toFixed(3);
               let usdQuote = res.data.BTC.quote.USD;
 
-              if (Math.abs(difference) > 0) {
+              if (Math.abs(difference) > 0 || mode) {
                 bot.sendPhoto('806766796', './assets/Bitcoin.png', {
                   caption: `${difference > 0 ? '🔻' : '🔥'}Внимание!${difference > 0 ? '🔻' : '🔥'}\nЦена BTC сейчас составляет: ${currentPrice}$\n24h --->${
-                    usdQuote.volume_change_24h
-                  }(${usdQuote.percent_change_24h.toFixed(2)}%) ${usdQuote.percent_change_24h > 0 ? '🚀' : '🔻'}\n7d --->${usdQuote.percent_change_7d}%${
+                    usdQuote.volume_change_24h.toFixed(2)
+                  }$(${usdQuote.percent_change_24h.toFixed(2)}%) ${usdQuote.percent_change_24h > 0 ? '🚀' : '🔻'}\n7d --->${usdQuote.percent_change_7d.toFixed(2)}%${
                     usdQuote.percent_change_7d > 0 ? '🚀' : '🔻'
-                  }\n${difference > 0 ? `Падение на ${differenceProcent}% за последние 30 минут` : `Рост на ${differenceProcent}% за последние 30 минут`}`,
+                  }\n${usdQuote.percent_change_1h < 0 ? `Падение на ${usdQuote.percent_change_1h.toFixed(2)}% за последний час` : `Рост на ${usdQuote.percent_change_1h.toFixed(2)}% за последний час`}`,
                 });
               }
               btc.price = +currentPrice;
