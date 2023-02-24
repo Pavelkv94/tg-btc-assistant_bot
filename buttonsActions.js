@@ -16,7 +16,6 @@ module.exports = {
   },
 
   async startBot(chatId, first_name) {
-    console.log(chatId);
     await bot.sendMessage(chatId, `Приветствую тебя ${first_name}! Я твой личный крипто ассистент. Пока нахожусь в демо-версии поэтому могу тупить)`, {
       reply_markup: {
         keyboard: [
