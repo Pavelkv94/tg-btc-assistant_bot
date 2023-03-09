@@ -77,4 +77,4 @@ const botActions = () => {
 };
 
 botActions();
-setInterval(() => monitorPrice(false), 1800 * 1000);
+setInterval(() => monitorPrice(false), 3600 * 1000);
