@@ -165,7 +165,6 @@ module.exports = {
     // Define the parameters to be sent to the API endpoint
     const params = {
       headers: {
-        // 'X-CMC_PRO_API_KEY': '3ff74387-0a6e-4e72-8742-d63376601304',
         'X-CMC_PRO_API_KEY': process.env.COINMARKET_API_KEY,
 
       },
