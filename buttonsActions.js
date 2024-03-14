@@ -51,8 +51,8 @@ module.exports = {
     await bot.sendMessage(chatId, `Приветствую тебя ${first_name}! Я твой личный крипто ассистент. Пока нахожусь в демо-версии поэтому могу тупить)`, {
       reply_markup: {
         keyboard: [
-          [{ text: '💰 My Crypto' }, { text: '🪙 BTC' }, { text: '📖 History' }],
-          [{ text: 'Buy' }, { text: 'Sell' }],
+          [{ text: '💰 My Crypto' }, { text: '🪙 BTC' }],
+          // [{ text: 'Buy' }, { text: 'Sell' }],
         ],
         one_time_keyboard: false,
         resize_keyboard: true,
