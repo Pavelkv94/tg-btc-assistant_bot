@@ -1,0 +1,9 @@
+services:
+  tg-btc:
+    build:
+      context: .
+    volumes:
+      - .:/app
+    environment:
+      BOT_TOKEN: $BOT_TOKEN
+      COINMARKET_API_KEY: $COINMARKET_API_KEY
