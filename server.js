@@ -1,5 +1,6 @@
 const bot = require("./bot");
 const { monitorPrice } = require("./monitorBTC");
+const { saveUserId } = require("./utils/usersProcess");
 
 require("dotenv").config();
 
@@ -10,6 +11,7 @@ const runBot = () => {
 
     try {
       if (text === "/start") {
+        saveUserId(chatId)
         bot.sendMessage(chatId, "💰Hi! I help you track the price of bitcoin.💰", {
           reply_markup: {
             keyboard: [["💎 BTC 💎"]],
