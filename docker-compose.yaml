@@ -7,3 +7,4 @@ services:
     environment:
       BOT_TOKEN: $BOT_TOKEN
       COINMARKET_API_KEY: $COINMARKET_API_KEY
+    restart: unless-stopped
