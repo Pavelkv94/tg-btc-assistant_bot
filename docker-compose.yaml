@@ -1,5 +1,8 @@
 services:
   tg-btc:
+    container_name: tg-btc
+    networks:
+      - x_network
     build:
       context: .
     volumes:
@@ -7,4 +10,7 @@ services:
     environment:
       BOT_TOKEN: $BOT_TOKEN
       COINMARKET_API_KEY: $COINMARKET_API_KEY
-    restart: unless-stopped
+
+networks:
+  x_network:
+    external: true
