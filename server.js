@@ -16,7 +16,7 @@ const runBot = () => {
         saveUserId(chatId);
         bot.sendMessage(chatId, "💰Hi! I help you track the price of bitcoin.💰", {
           reply_markup: {
-            keyboard: [["💎 BTC 💎", { text: "🔥 Navidrome 🔥", web_app: { url: webAppUrl, height: 100 } }]],
+            keyboard: [["💎 BTC 💎", { text: "🔥 Navidrome 🔥", web_app: { url: webAppUrl } }]],
             one_time_keyboard: false,
             resize_keyboard: true,
           },
