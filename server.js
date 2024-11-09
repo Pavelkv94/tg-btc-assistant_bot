@@ -9,12 +9,14 @@ const runBot = () => {
     const text = msg.text;
     const chatId = msg.chat.id;
 
+    const webAppUrl = process.env.NAVIDROME_URL;
+
     try {
       if (text === "/start") {
-        saveUserId(chatId)
+        saveUserId(chatId);
         bot.sendMessage(chatId, "💰Hi! I help you track the price of bitcoin.💰", {
           reply_markup: {
-            keyboard: [["💎 BTC 💎"]],
+            keyboard: [["💎 BTC 💎", { text: "🔥 Open Navidrome 🔥", web_app: { url: webAppUrl } }]],
             one_time_keyboard: false,
             resize_keyboard: true,
           },
