@@ -57,23 +57,30 @@ module.exports = {
         const difference = currentPrice - savedPrice;
 
         if (isThousandChanged && (difference >= 200 || difference <= -200)) {
-          let chats = loadUserIds();
+          const now = new Date();
+          const hours = now.getHours();
 
-          chats.map((chatId) => {
-            bot.sendPhoto(chatId, difference <= -200 ? "./assets/btc_down.webp" : "./assets/btc_up.jpg", {
-              caption: `${difference <= -200 ? "🔻" : "🔥"}Внимание!${
-                difference <= -200 ? "🔻" : "🔥"
-              }\nЦена BTC сейчас составляет: ${currentPrice}$\n24h --->${usdQuote.volume_change_24h.toFixed(2)}$(${usdQuote.percent_change_24h.toFixed(2)}%) ${
-                usdQuote.percent_change_24h > 0 ? "🚀" : "🔻"
-              }\n7d --->${usdQuote.percent_change_7d.toFixed(2)}%${usdQuote.percent_change_7d > 0 ? "🚀" : "🔻"}\n${
-                usdQuote.percent_change_1h < 0
-                  ? `Падение на ${usdQuote.percent_change_1h.toFixed(2)}% за последний час`
-                  : `Рост на ${usdQuote.percent_change_1h.toFixed(2)}% за последний час`
-              }`,
+          if (hours >= 9 && hours < 24) {
+            
+            let chats = loadUserIds();
+            chats.map((chatId) => {
+              bot.sendPhoto(chatId, difference <= -200 ? "./assets/btc_down.webp" : "./assets/btc_up.jpg", {
+                caption: `${difference <= -200 ? "🔻" : "🔥"}Внимание!${
+                  difference <= -200 ? "🔻" : "🔥"
+                }\nЦена BTC сейчас составляет: ${currentPrice}$\n24h --->${usdQuote.volume_change_24h.toFixed(2)}$(${usdQuote.percent_change_24h.toFixed(
+                  2
+                )}%) ${usdQuote.percent_change_24h > 0 ? "🚀" : "🔻"}\n7d --->${usdQuote.percent_change_7d.toFixed(2)}%${
+                  usdQuote.percent_change_7d > 0 ? "🚀" : "🔻"
+                }\n${
+                  usdQuote.percent_change_1h < 0
+                    ? `Падение на ${usdQuote.percent_change_1h.toFixed(2)}% за последний час`
+                    : `Рост на ${usdQuote.percent_change_1h.toFixed(2)}% за последний час`
+                }`,
+              });
             });
-          });
 
-          saveBTC(response);
+            saveBTC(response);
+          }
         }
       }
     } catch (error) {

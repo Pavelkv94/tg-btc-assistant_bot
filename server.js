@@ -32,4 +32,4 @@ const runBot = () => {
 };
 
 runBot();
-setInterval(() => monitorPrice(false), 3600 * 1000);
+setInterval(() => monitorPrice(false), 1200 * 1000);
