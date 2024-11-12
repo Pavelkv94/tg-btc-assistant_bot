@@ -35,5 +35,6 @@ jobs:
 
       - name: Verify services are running
         run: |
-          docker compose -f docker-compose.yaml ps  # Check the status of all services
+          cd repo
+          docker compose ps  # Check the status of all services
           echo "🍏 The job's status is ${{ job.status }}."
