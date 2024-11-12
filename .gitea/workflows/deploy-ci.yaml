@@ -29,7 +29,8 @@ jobs:
         run: |
           cd repo
           docker-compose down  # Stop any existing services
-          docker-compose up -d --build  # Build and run services in detached mode
+          export COINMARKET_API_KEY=${{ secrets.COINMARKET_API_KEY }}
+          docker compose up -d --build  # Build and run services in detached mode
           echo "🚀 Your app is now running with Docker Compose!"
 
       - name: Verify services are running
