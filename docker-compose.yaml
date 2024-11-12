@@ -6,7 +6,7 @@ services:
     build:
       context: .
     volumes:
-      - .:/app
+      - /home/akiro/docker/btc:/app
     environment:
       BOT_TOKEN: $BOT_TOKEN
       COINMARKET_API_KEY: $COINMARKET_API_KEY

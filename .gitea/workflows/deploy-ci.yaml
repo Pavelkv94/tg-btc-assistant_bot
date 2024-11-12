@@ -1,0 +1,38 @@
+# .gitea/gitea-ci.yml
+name: "TG BOT DEPLOY"
+on:
+  push:
+    branches:
+      - "main"  
+jobs:
+  explore_gitea_actions:
+    image: docker/compose:latest
+    steps:
+      - name: Display event info
+        run: |
+          echo "🎉 The job was automatically triggered by a push event."
+          echo "🐧 This job is running on an Ubuntu server hosted by Gitea!"
+      
+      - name: Check out repository code
+        run: |
+          git clone "http://10.0.0.2:3010/akiro/tg-btc-assistant-bot.git" repo
+          cd repo
+          echo "💡 The repository has been cloned to the runner."
+
+      - name: List files in the repository
+        run: |
+          cd repo
+          ls -la
+          echo "docker-compose.yml should be listed above."
+
+      - name: Start services with Docker Compose
+        run: |
+          cd repo
+          docker-compose down  # Stop any existing services
+          docker-compose up -d --build  # Build and run services in detached mode
+          echo "🚀 Your app is now running with Docker Compose!"
+
+      - name: Verify services are running
+        run: |
+          docker-compose ps  # Check the status of all services
+          echo "🍏 The job's status is ${{ job.status }}."
