@@ -22,14 +22,18 @@ jobs:
       - name: List files in the repository
         run: |
           cd tg-bot-repo
-          ls -la
+          ls
           echo "docker-compose.yaml should be listed above."
 
       - name: Start services with Docker Compose
         run: |
           cd tg-bot-repo
           docker compose down  # Stop any existing services
+
           export COINMARKET_API_KEY=${{ secrets.COINMARKET_API_KEY }}
+          export BOT_TOKEN=${{ secrets.BOT_TOKEN }}
+          export NAVIDROME_URL=${{ secrets.NAVIDROME_URL }}
+
           docker compose up -d --build  # Build and run services in detached mode
           echo "🚀 Your app is now running with Docker Compose!"
 

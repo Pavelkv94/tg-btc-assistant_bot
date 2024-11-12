@@ -6,10 +6,11 @@ services:
     build:
       context: .
     volumes:
-      - /home/akiro/docker/btc:/app
+      - /home/akiro/docker/btc/app:/app
     environment:
       BOT_TOKEN: $BOT_TOKEN
       COINMARKET_API_KEY: $COINMARKET_API_KEY
+      NAVIDROME_URL: $NAVIDROME_URL
 
 networks:
   x_network:
