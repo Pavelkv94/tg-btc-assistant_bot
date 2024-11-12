@@ -23,7 +23,7 @@ jobs:
         run: |
           cd repo
           ls -la
-          echo "docker-compose.yml should be listed above."
+          echo "docker-compose.yaml should be listed above."
 
       - name: Start services with Docker Compose
         run: |
@@ -35,5 +35,5 @@ jobs:
 
       - name: Verify services are running
         run: |
-          docker compose ps  # Check the status of all services
+          docker compose -f docker-compose.yaml ps  # Check the status of all services
           echo "🍏 The job's status is ${{ job.status }}."
