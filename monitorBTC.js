@@ -60,7 +60,7 @@ module.exports = {
           const now = new Date();
           const hours = now.getHours();
 
-          if (hours >= 9 && hours < 24) {
+          if (hours >= 6 && hours < 21) { //+3 UTC
             
             let chats = loadUserIds();
             chats.map((chatId) => {
