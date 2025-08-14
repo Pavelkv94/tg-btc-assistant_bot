@@ -25,7 +25,7 @@ async function _getLatestPrices() {
 }
 
 module.exports = {
-  async monitorPrice(click, chatId) {
+  async monitorPriceBTC(click, chatId) {
     console.log("Check price");
 
     try {

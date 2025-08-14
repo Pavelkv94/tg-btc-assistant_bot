@@ -1,5 +1,6 @@
 const bot = require("./bot");
-const { monitorPrice } = require("./monitorBTC");
+const { monitorPriceBTC } = require("./monitorBTC");
+const { monitorPriceSOL } = require("./monitorSOL");
 const { saveUserId } = require("./utils/usersProcess");
 
 require("dotenv").config();
@@ -16,13 +17,15 @@ const runBot = () => {
         saveUserId(chatId);
         bot.sendMessage(chatId, "💰Hi! I help you track the price of bitcoin.💰", {
           reply_markup: {
-            keyboard: [["💎 BTC 💎", { text: "🔥 Navidrome 🔥", web_app: { url: webAppUrl } }]],
+            keyboard: [["💎 BTC 💎", "💎 SOL 💎", { text: "🔥 Navidrome 🔥", web_app: { url: webAppUrl } }]],
             one_time_keyboard: false,
             resize_keyboard: true,
           },
         });
       } else if (text === "💎 BTC 💎") {
-        monitorPrice(true, chatId);
+        monitorPriceBTC(true, chatId);
+      } else if (text === "💎 SOL 💎") {
+        monitorPriceSOL(true, chatId);
       } else return bot.sendMessage(chatId, "Я не понимаю тебя, попробуй еще раз!");
     } catch (e) {
       console.log(e);
@@ -32,4 +35,8 @@ const runBot = () => {
 };
 
 runBot();
-setInterval(() => monitorPrice(false), 1200 * 1000);
+setInterval(() => {
+  monitorPriceBTC(false);
+  monitorPriceSOL(false);
+  // 1200 * 1000 - 1200 seconds - 20 minutes
+}, 1200 * 1000);

@@ -1,19 +1,19 @@
 {
-  "currentPrice": 76066.37,
+  "currentPrice": 120953.2,
   "usdQuote": {
-    "price": 76066.36640630732,
-    "volume_24h": 59329878301.58914,
-    "volume_change_24h": -15.3673,
-    "percent_change_1h": -0.32434811,
-    "percent_change_24h": 1.58662861,
-    "percent_change_7d": 8.70456528,
-    "percent_change_30d": 22.37797644,
-    "percent_change_60d": 37.6751215,
-    "percent_change_90d": 24.8685651,
-    "market_cap": 1504547544095.1135,
-    "market_cap_dominance": 58.6021,
-    "fully_diluted_market_cap": 1597393694532.45,
+    "price": 120953.20229096773,
+    "volume_24h": 99181222578.1448,
+    "volume_change_24h": 31.4345,
+    "percent_change_1h": 0.07226216,
+    "percent_change_24h": 0.46731713,
+    "percent_change_7d": 3.97158384,
+    "percent_change_30d": 3.35203066,
+    "percent_change_60d": 14.9964934,
+    "percent_change_90d": 16.55091651,
+    "market_cap": 2407728432653.8477,
+    "market_cap_dominance": 58.5055,
+    "fully_diluted_market_cap": 2540017248110.32,
     "tvl": null,
-    "last_updated": "2024-11-08T12:04:00.000Z"
+    "last_updated": "2025-08-14T12:11:00.000Z"
   }
 }
