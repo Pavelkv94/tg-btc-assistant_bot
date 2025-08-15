@@ -35,6 +35,6 @@ const runBot = () => {
 
 runBot();
 setInterval(() => {
-  monitorPrice(chatId);
+  monitorPrice();
   // 1200 * 1000 - 1200 seconds - 20 minutes
 }, 1200 * 1000);
