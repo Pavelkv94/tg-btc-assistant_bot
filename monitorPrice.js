@@ -68,6 +68,8 @@ module.exports = {
 
             const isThousandChangedBtc = symbol === currencySymbols.BTC && Math.floor(currentPrice / 1000) !== Math.floor(savedPrice / 1000);
 
+            let difference = currentPrice - savedPrice;
+
             const isDifferenceSol = symbol === currencySymbols.SOL && isDecadeChangedSol && (difference >= 2 || difference <= -2);
             const isDifferenceBtc = symbol === currencySymbols.BTC && isThousandChangedBtc && (difference >= 200 || difference <= -200);
 
