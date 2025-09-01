@@ -70,7 +70,7 @@ module.exports = {
 
             let difference = currentPrice - savedPrice;
 
-            const isDifferenceSol = symbol === currencySymbols.SOL && isDecadeChangedSol && (difference >= 2 || difference <= -2);
+            const isDifferenceSol = symbol === currencySymbols.SOL && (difference >= 5 || difference <= -5);
             const isDifferenceBtc = symbol === currencySymbols.BTC && isThousandChangedBtc && (difference >= 200 || difference <= -200);
 
             if (isDifferenceSol || isDifferenceBtc) {
