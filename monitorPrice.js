@@ -42,7 +42,7 @@ module.exports = {
         const { [symbol]: { currentPrice, usdQuote } } = response;
         let difference = currentPrice - savedPrice;
 
-        const isDifference = symbol === currencySymbols.SOL ? difference < 0 : difference <= -200;
+        const isDifference = symbol === currencySymbols.SOL ? difference < 0 : difference <= -500;
 
         await bot.sendPhoto(chatId, isDifference ? `./assets/${symbol}_down.webp` : `./assets/${symbol}_up.webp`, {
           caption: `${isDifference ? "🔻" : "🔥"}Внимание!${isDifference ? "🔻" : "🔥"
@@ -66,15 +66,15 @@ module.exports = {
             const { [symbol]: { currentPrice, usdQuote } } = response;
             const isDecadeChangedSol = symbol === currencySymbols.SOL && Math.floor(currentPrice / 10) !== Math.floor(savedPrice / 10);
 
-            const isThousandChangedBtc = symbol === currencySymbols.BTC && Math.floor(currentPrice / 1000) !== Math.floor(savedPrice / 1000);
+            const isFiveThousandChangedBtc = symbol === currencySymbols.BTC && Math.floor(currentPrice / 5000) !== Math.floor(savedPrice / 5000);
 
             let difference = currentPrice - savedPrice;
 
             const isDifferenceSol = symbol === currencySymbols.SOL && (difference >= 5 || difference <= -5);
-            const isDifferenceBtc = symbol === currencySymbols.BTC && isThousandChangedBtc && (difference >= 200 || difference <= -200);
+            const isDifferenceBtc = symbol === currencySymbols.BTC && isFiveThousandChangedBtc && (difference >= 500 || difference <= -500);
 
             if (isDifferenceSol || isDifferenceBtc) {
-              const isDifferencePrice = symbol === currencySymbols.SOL ? difference < 0 : difference <= -200;
+              const isDifferencePrice = symbol === currencySymbols.SOL ? difference < 0 : difference <= -500;
 
               let chats = loadUserIds();
               chats.map((chatId) => {
