@@ -15,6 +15,8 @@ spec:
       labels:
         app: tg-btc-bot
     spec:
+      imagePullSecrets:
+      - name: ghcr-secret
       containers:
       - name: tg-btc-bot
         image: ghcr.io/pavelkv94/tg-btc-assistant_bot:latest
