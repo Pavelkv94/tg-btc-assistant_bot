@@ -85,7 +85,7 @@ jobs:
       - name: Apply Kubernetes manifests
         run: |
           # Apply all manifests (PVC, ConfigMap, Secret, Service, etc.)
-          kubectl apply -f k8s/
+          kubectl apply -f k3s/
 
       - name: Update deployment image
         run: |
@@ -93,7 +93,7 @@ jobs:
 
       - name: Deploy to Kubernetes
         run: |
-          kubectl apply -f k8s/
+          kubectl apply -f k3s/
           kubectl rollout status deployment/tg-btc-bot -n default --timeout=5m
 
       - name: Verify deployment
