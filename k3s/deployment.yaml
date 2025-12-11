@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: tg-btc-bot
-        image: ghcr.io/Pavelkv94/tg-btc-assistant_bot:latest
+        image: ghcr.io/pavelkv94/tg-btc-assistant_bot:latest
         imagePullPolicy: Always
         env:
         - name: BOT_TOKEN
