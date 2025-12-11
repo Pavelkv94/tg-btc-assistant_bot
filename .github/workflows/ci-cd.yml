@@ -74,6 +74,9 @@ jobs:
           kubectl cluster-info
           kubectl get nodes
 
+      - name: Apply namespace
+        run: kubectl apply -f k3s/namespace.yaml
+
       - name: Create Kubernetes Secret
         run: |
           kubectl create secret generic tg-bot-secrets \
