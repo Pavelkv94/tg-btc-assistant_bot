@@ -61,7 +61,7 @@ jobs:
 
   deploy:
     needs: build-and-push
-    runs-on: [self-hosted, k3s-runner] # Run on self-hosted k3s runner
+    runs-on: [self-hosted, Linux, X64] # Run on self-hosted k3s runner
     if: github.ref == 'refs/heads/main'  # Only deploy from main branch
     
     steps:
