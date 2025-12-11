@@ -1,0 +1,101 @@
+name: Build and Deploy to Kubernetes
+
+on:
+  push:
+    branches:
+      - main  # or your main branch name
+  workflow_dispatch:  # allows manual trigger
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+    # Клонирует твой GitHub‑репозиторий в раннер (виртуальную машину, где выполняется workflow).
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+# Настраивает Docker Buildx, инструмент для сборки мультиплатформенных Docker‑образов.
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+# Авторизуется в GitHub Container Registry для последующей отправки образов.
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.GHCR_USERNAME }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+# Извлекает метаданные (теги и метки) для Docker‑образа, чтобы удобно управлять версиями.
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+
+# Собирает и отправляет Docker‑образ в GitHub Container Registry.
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    needs: build-and-push
+    runs-on: [self-hosted, k3s-runner] # Run on self-hosted k3s runner
+    if: github.ref == 'refs/heads/main'  # Only deploy from main branch
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify kubectl access
+        run: |
+          kubectl cluster-info
+          kubectl get nodes
+
+      - name: Create Kubernetes Secret
+        run: |
+          kubectl create secret generic tg-bot-secrets \
+            --namespace tg-btc-bot \
+            --from-literal=BOT_TOKEN=${{ secrets.BOT_TOKEN }} \
+            --from-literal=COINMARKET_API_KEY=${{ secrets.COINMARKET_API_KEY }} \
+            --dry-run=client -o yaml | kubectl apply -f -
+
+      - name: Apply Kubernetes manifests
+        run: |
+          # Apply all manifests (PVC, ConfigMap, Secret, Service, etc.)
+          kubectl apply -f k8s/
+
+      - name: Update deployment image
+        run: |
+          kubectl set image deployment/tg-btc-bot tg-btc-bot=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest -n default
+
+      - name: Deploy to Kubernetes
+        run: |
+          kubectl apply -f k8s/
+          kubectl rollout status deployment/tg-btc-bot -n default --timeout=5m
+
+      - name: Verify deployment
+        run: |
+          kubectl get pods -n default -l app=tg-btc-bot
+          kubectl get deployment tg-btc-bot -n default

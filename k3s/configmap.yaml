@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tg-bot-config
+  namespace: tg-btc-bot  # or tg-bot if using namespace
+data:
+  NAVIDROME_URL: ""  # Set your value or leave empty
