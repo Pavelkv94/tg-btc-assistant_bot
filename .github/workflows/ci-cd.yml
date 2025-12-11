@@ -9,6 +9,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  KUBECONFIG: /home/akiro/.kube/config
 
 jobs:
   build-and-push:
