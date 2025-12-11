@@ -92,14 +92,14 @@ jobs:
 
       - name: Update deployment image
         run: |
-          kubectl set image deployment/tg-btc-bot tg-btc-bot=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest -n default
+          kubectl set image deployment/tg-btc-bot tg-btc-bot=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest -n tg-btc-bot
 
       - name: Deploy to Kubernetes
         run: |
           kubectl apply -f k3s/
-          kubectl rollout status deployment/tg-btc-bot -n default --timeout=5m
+          kubectl rollout status deployment/tg-btc-bot -n tg-btc-bot --timeout=5m
 
       - name: Verify deployment
         run: |
-          kubectl get pods -n default -l app=tg-btc-bot
-          kubectl get deployment tg-btc-bot -n default
+          kubectl get pods -n tg-btc-bot -l app=tg-btc-bot
+          kubectl get deployment tg-btc-bot -n tg-btc-bot
