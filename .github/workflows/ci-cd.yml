@@ -8,7 +8,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  #IMAGE_NAME: ${{ github.repository }} # cause my username have invalid registry name
   KUBECONFIG: /home/akiro/.kube/config
 
 jobs:
@@ -22,6 +22,9 @@ jobs:
     # Клонирует твой GitHub‑репозиторий в раннер (виртуальную машину, где выполняется workflow).
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Set image name (lowercase)
+        run: echo "IMAGE_NAME=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
 # Настраивает Docker Buildx, инструмент для сборки мультиплатформенных Docker‑образов.
       - name: Set up Docker Buildx
@@ -77,6 +80,15 @@ jobs:
       - name: Apply namespace
         run: kubectl apply -f k3s/namespace.yaml
 
+      - name: Create image pull secret
+        run: |
+          kubectl create secret docker-registry ghcr-secret \
+            --namespace tg-btc-bot \
+            --docker-server=ghcr.io \
+            --docker-username=${{ secrets.GHCR_USERNAME }} \
+            --docker-password=${{ secrets.GHCR_TOKEN }} \
+            --dry-run=client -o yaml | kubectl apply -f -
+            
       - name: Create Kubernetes Secret
         run: |
           kubectl create secret generic tg-bot-secrets \
