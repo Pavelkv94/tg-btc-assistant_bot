@@ -13,4 +13,4 @@ services:
       WEB_APP_URL: $WEB_APP_URL
       PORT: $PORT
     ports:
-      - "5010:5000"
+      - "5004:5000"
