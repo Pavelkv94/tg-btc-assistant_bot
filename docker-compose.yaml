@@ -1,9 +1,14 @@
 services:
-  tg-btc:
-    container_name: tg-btc
+  tg-btc-bot:
+    container_name: tg-btc-bot
+    mem_limit: 256m
+    cpus: 0.5
     build:
       context: .
     environment:
-      BOT_TOKEN: $BOT_TOKEN
+      TG_BOT_TOKEN: $TG_BOT_TOKEN
       COINMARKET_API_KEY: $COINMARKET_API_KEY
-      NAVIDROME_URL: $NAVIDROME_URL
+      MONGO_URL: $MONGO_URL
+      DB_NAME: $DB_NAME
+      WEB_APP_URL: $WEB_APP_URL
+      PORT: $PORT
