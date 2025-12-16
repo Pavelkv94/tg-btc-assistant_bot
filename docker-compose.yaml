@@ -1,7 +1,7 @@
 services:
   tg-btc-bot:
     container_name: tg-btc-bot
-    mem_limit: 256m
+    mem_limit: 512m
     cpus: 0.5
     build:
       context: .
