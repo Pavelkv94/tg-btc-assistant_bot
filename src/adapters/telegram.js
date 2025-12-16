@@ -4,6 +4,38 @@ import { cryptoController } from "../features/crypto/crypto.controller.js";
 import { airController } from "../features/air/air.controller.js";
 import { WELCOME_MESSAGE, ERROR_MESSAGE, UNKNOWN_COMMAND } from "../constants/messages.js";
 
+// Rate limiter storage: { chatId: { command: lastRequestTime } }
+const rateLimitMap = new Map();
+
+// Cooldown period in milliseconds (e.g., 5000 = 5 seconds)
+const RATE_LIMIT_COOLDOWN = 5000;
+
+/**
+ * Check if user is rate limited for a specific command
+ * @param {number} chatId - Telegram chat ID
+ * @param {string} command - Command/button text
+ * @returns {boolean} True if rate limited, false otherwise
+ */
+function isRateLimited(chatId, command) {
+  const userLimits = rateLimitMap.get(chatId);
+
+  if (!userLimits) {
+    rateLimitMap.set(chatId, { [command]: Date.now() });
+    return false;
+  }
+
+  const lastRequestTime = userLimits[command];
+  const now = Date.now();
+
+  if (lastRequestTime && (now - lastRequestTime) < RATE_LIMIT_COOLDOWN) {
+    const remainingTime = Math.ceil((RATE_LIMIT_COOLDOWN - (now - lastRequestTime)) / 1000);
+    return remainingTime; // Return remaining seconds
+  }
+
+  userLimits[command] = now;
+  return false;
+}
+
 /**
  * Handle /start command - Initialize user and show main menu
  * @param {number} chatId - Telegram chat ID
@@ -61,12 +93,30 @@ export function runBot() {
       if (text === "/start") {
         await handleStartCommand(chatId, first_name, username);
       } else if (text === "💎 BTC 💎") {
+        // Check rate limit
+        const rateLimitRemaining = isRateLimited(chatId, text);
+        if (rateLimitRemaining) {
+          await bot.sendMessage(chatId, `⏳ Please wait ${rateLimitRemaining} seconds before checking BTC again.`);
+          return;
+        }
         console.log(`📊 BTC price request from user ${chatId}`);
         await cryptoController.handlePriceRequest(chatId, "BTC");
       } else if (text === "💎 SOL 💎") {
+        // Check rate limit
+        const rateLimitRemaining = isRateLimited(chatId, text);
+        if (rateLimitRemaining) {
+          await bot.sendMessage(chatId, `⏳ Please wait ${rateLimitRemaining} seconds before checking SOL again.`);
+          return;
+        }
         console.log(`📊 SOL price request from user ${chatId}`);
         await cryptoController.handlePriceRequest(chatId, "SOL");
       } else if (text === "🌤 Air Quality 🌤") {
+        // Check rate limit
+        const rateLimitRemaining = isRateLimited(chatId, text);
+        if (rateLimitRemaining) {
+          await bot.sendMessage(chatId, `⏳ Please wait ${rateLimitRemaining} seconds before checking air quality again.`);
+          return;
+        }
         console.log(`🌤 AQI check request from user ${chatId}`);
         await airController.handleAQIRequest(chatId);
       } else if (text === "🔄 Reload bot") {
@@ -97,4 +147,3 @@ export async function getAllUserChatIds() {
     return [];
   }
 }
-
