@@ -12,4 +12,5 @@ services:
       DB_NAME: $DB_NAME
       WEB_APP_URL: $WEB_APP_URL
       PORT: $PORT
-    ports: 5004:5000
+    ports: 
+      - "5004:5000"
