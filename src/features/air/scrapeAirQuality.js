@@ -29,10 +29,12 @@ export async function scrapeAirQuality(userChatIds, type) {
 
         // Wait for the page to load and the element to be present
         console.log('Waiting for page to load...');
-        await driver.wait(until.elementLocated(By.className('aqi-bg-orange')), 10000);
+        // Navigate: main#main-content > div.bg-linear-gradient.relative > div[2] > div[1] > div[2] > div[2]
+        const xpath = "//main[@id='main-content']/div[contains(@class, 'bg-linear-gradient') and contains(@class, 'relative')]/div[2]/div[1]/div[2]/div[2]";
+        await driver.wait(until.elementLocated(By.xpath(xpath)), 10000);
 
-        // Find the element with class "aqi-bg-orange"
-        const element = await driver.findElement(By.className('aqi-bg-orange'));
+        // Find the element using the specific DOM path
+        const element = await driver.findElement(By.xpath(xpath));
 
         // Get the text content
         const text = await element.getText();
