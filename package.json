@@ -8,16 +8,32 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js"
   },
-  "keywords": ["telegram", "bot", "cryptocurrency", "radio", "bitcoin", "solana"],
+  "keywords": [
+    "telegram",
+    "bot",
+    "cryptocurrency",
+    "radio",
+    "bitcoin",
+    "solana"
+  ],
   "author": "Kazlou Pavel",
   "license": "ISC",
   "dependencies": {
     "axios": "^1.7.7",
+    "chromedriver": "136",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "mongodb": "^6.10.0",
     "node-telegram-bot-api": "^0.66.0",
-    "nodemon": "^3.1.7"
+    "nodemon": "^3.1.7",
+    "selenium-webdriver": "^4.39.0"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "json_db/*",
+      "node_modules/*",
+      ".git"
+    ]
   }
 }

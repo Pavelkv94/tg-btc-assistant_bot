@@ -1,6 +1,7 @@
 import { bot } from "../config/bot.js";
 import { usersService } from "../features/users/users.service.js";
 import { cryptoController } from "../features/crypto/crypto.controller.js";
+import { airController } from "../features/air/air.controller.js";
 import { WELCOME_MESSAGE, ERROR_MESSAGE, UNKNOWN_COMMAND } from "../constants/messages.js";
 
 /**
@@ -31,7 +32,7 @@ async function handleStartCommand(chatId, first_name, username) {
       reply_markup: {
         keyboard: [
           ["💎 BTC 💎", "💎 SOL 💎"],
-          [{ text: "🔥 Listen radio 🔥", web_app: { url: webAppUrl } }, "🔄 Reload bot"],
+          [{ text: "🔥 Listen radio 🔥", web_app: { url: webAppUrl } }, "🌤 Air Quality 🌤", "🔄 Reload bot"],
         ],
         resize_keyboard: true,
         one_time_keyboard: false,
@@ -65,6 +66,9 @@ export function runBot() {
       } else if (text === "💎 SOL 💎") {
         console.log(`📊 SOL price request from user ${chatId}`);
         await cryptoController.handlePriceRequest(chatId, "SOL");
+      } else if (text === "🌤 Air Quality 🌤") {
+        console.log(`🌤 AQI check request from user ${chatId}`);
+        await airController.handleAQIRequest(chatId);
       } else if (text === "🔄 Reload bot") {
         await handleStartCommand(chatId, first_name, username);
       } else {

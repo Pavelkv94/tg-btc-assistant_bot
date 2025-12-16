@@ -4,6 +4,7 @@ import { seedStations } from "./config/dbSeed.js";
 import { initApp } from "./server/app.js";
 import { runBot, getAllUserChatIds } from "./adapters/telegram.js";
 import { cryptoService } from "./features/crypto/crypto.service.js";
+import { scrapeAirQuality } from "./features/air/scrapeAirQuality.js";
 
 // Load environment variables
 config();
@@ -35,16 +36,17 @@ async function main() {
 
     // 5. Start price monitoring (every 20 minutes)
     const MONITORING_INTERVAL = 1200 * 1000; // 20 minutes in milliseconds
-    
+
     console.log(`⏰ Price monitoring interval: ${MONITORING_INTERVAL / 1000 / 60} minutes`);
-    
+
     setInterval(async () => {
-      console.log("🔄 Running scheduled price check...");
+      console.log("🔄 Running scheduled check...");
       try {
         const userChatIds = await getAllUserChatIds();
         await cryptoService.monitorAllPrices(userChatIds);
+        await scrapeAirQuality(userChatIds, "scheduled");
       } catch (error) {
-        console.error("❌ Error in price monitoring:", error);
+        console.error("❌ Error in monitoring:", error);
       }
     }, MONITORING_INTERVAL);
 
@@ -53,6 +55,7 @@ async function main() {
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
     console.log("📱 Features available:");
     console.log("   • Cryptocurrency monitoring (BTC, SOL)");
+    console.log("   • Air quality monitoring (AQI)");
     console.log("   • Radio stations streaming");
     console.log("   • Telegram miniapp integration");
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");

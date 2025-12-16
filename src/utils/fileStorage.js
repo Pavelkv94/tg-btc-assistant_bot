@@ -7,13 +7,17 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 /**
- * Save cryptocurrency price data to JSON file
- * @param {string} symbol - Crypto symbol (BTC or SOL)
- * @param {object} data - Price data to save
+ * Save data to JSON file
+ * @param {string} symbol - Data identifier (BTC, SOL, AQI_value, etc.)
+ * @param {object} data - Data to save
  */
 export function saveInfo(symbol, data) {
   const dataFilePath = path.join(__dirname, `../../json_db/${symbol}_data.json`);
-  const dataToSave = JSON.stringify(data[symbol], null, 2);
+
+  // Handle both crypto format (data[symbol]) and simple format (data directly)
+  const dataToSave = data[symbol]
+    ? JSON.stringify(data[symbol], null, 2)
+    : JSON.stringify(data, null, 2);
 
   fs.writeFile(dataFilePath, dataToSave, (err) => {
     if (err) {
@@ -25,9 +29,9 @@ export function saveInfo(symbol, data) {
 }
 
 /**
- * Load cryptocurrency price data from JSON file
- * @param {string} symbol - Crypto symbol (BTC or SOL)
- * @returns {object} Price data
+ * Load data from JSON file
+ * @param {string} symbol - Data identifier (BTC, SOL, AQI_value, etc.)
+ * @returns {object} Data from file
  */
 export function loadInfo(symbol) {
   try {
