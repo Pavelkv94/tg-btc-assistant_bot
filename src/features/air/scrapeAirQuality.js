@@ -1,11 +1,11 @@
 import { Builder, By, until } from 'selenium-webdriver';
-import chrome from 'selenium-webdriver/chrome.js';
+import firefox from 'selenium-webdriver/firefox.js';
 import 'chromedriver'; // This ensures the correct ChromeDriver version is used
 import { airService } from './air.service.js';
 
 export async function scrapeAirQuality(userChatIds, type) {
     // Set up Chrome options for headless browsing
-    const options = new chrome.Options();
+    const options = new firefox.Options().setBinary('/usr/local/bin/firefox');
     options.addArguments('--headless');
     options.addArguments('--no-sandbox');
     options.addArguments('--disable-dev-shm-usage');
