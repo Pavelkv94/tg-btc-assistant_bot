@@ -1,6 +1,7 @@
 services:
   tg-btc-bot:
     container_name: tg-btc-bot
+    restart: unless-stopped
     mem_limit: 512m
     cpus: 0.5
     build:
