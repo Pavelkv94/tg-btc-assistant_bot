@@ -1,19 +1,28 @@
-FROM node:22
+FROM node:22-slim
 
-# Install dependencies for Firefox
-RUN apt-get update && apt-get install -y wget libgtk-3-0 libdbus-glib-1-2 libxt6 libx11-xcb1 libxcomposite1 libasound2 libdrm2 libxdamage1 libxfixes3 libxrandr2 libxrender1 libgtk-3-0 libdbus-glib-1-2 \
-    && wget https://ftp.mozilla.org/pub/firefox/releases/112.0/linux-x86_64/en-US/firefox-112.0.tar.bz2 \
-    && tar xjf firefox-112.0.tar.bz2 -C /opt/ \
-    && ln -s /opt/firefox/firefox /usr/local/bin/firefox \
-    && rm firefox-112.0.tar.bz2 \
+# Firefox for the Selenium AQI scraper (src/features/air/scrapeAirQuality.js
+# expects the binary at /usr/local/bin/firefox). geckodriver is fetched at
+# runtime by selenium-manager into ~/.cache/selenium.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends firefox-esr ca-certificates \
+    && ln -s /usr/bin/firefox-esr /usr/local/bin/firefox \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-COPY package.json /app/
+# Firefox is driven via geckodriver, so the chromedriver binary is never used
+ENV NODE_ENV=production \
+    CHROMEDRIVER_SKIP_DOWNLOAD=true
 
-RUN npm install
+COPY package.json yarn.lock ./
 
-COPY . .
+RUN yarn install --frozen-lockfile --production --non-interactive \
+    && yarn cache clean
+
+COPY --chown=node:node . .
+
+USER node
+
+EXPOSE 5000
 
 CMD ["npm","run","start"]
