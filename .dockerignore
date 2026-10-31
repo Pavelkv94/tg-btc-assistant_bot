@@ -1,3 +1,24 @@
-node_modules
+# Secrets
+.env
+.env.*
+
+# VCS, CI and editor files
 .git
+.gitignore
+.github
+.claude
+.vscode
+.idea
+**/.DS_Store
+
+# Dependencies are installed inside the image
+node_modules
+npm-debug.log*
+yarn-error.log*
+
+# Not needed at runtime
 Dockerfile
+.dockerignore
+docker-compose.yaml
+README.md
+LICENSE

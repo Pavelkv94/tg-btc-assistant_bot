@@ -4,8 +4,7 @@ services:
     restart: unless-stopped
     mem_limit: 512m
     cpus: 0.5
-    build:
-      context: .
+    image: ghcr.io/pavelkv94/tg-btc-assistant_bot:latest
     environment:
       TG_BOT_TOKEN: $TG_BOT_TOKEN
       COINMARKET_API_KEY: $COINMARKET_API_KEY
